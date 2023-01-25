@@ -1,6 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 function App() {
   const CLIENT_ID = "0876b3cbdd284d49ac26ded9817b6d6d";
@@ -33,10 +34,40 @@ function App() {
     window.localStorage.removeItem("token");
   };
 
+  const [searchKey, setSearchKey] = useState("");
+  const [artists, setArtists] = useState([]);
+
+  const searchArtists = async (e) => {
+    e.preventDefault();
+    const { data } = await axios.get("https://api.spotify.com/v1/search", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        q: searchKey,
+        type: "artist",
+      },
+    });
+
+    setArtists(data.artists.items);
+  };
+
+  const renderArtists = () => {
+    return artists.map((artist) => (
+      <div key={artist.id}>
+        {artist.images.length ? (
+          <img width={"100%"} src={artist.images[0].url} alt="" />
+        ) : (
+          <div>No Image</div>
+        )}
+        {artist.name}
+      </div>
+    ));
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Spotify React</h1>
         {!token ? (
           <a
             href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
@@ -44,7 +75,17 @@ function App() {
             Login to Spotify
           </a>
         ) : (
-          <button onClick={logout}>Logout</button>
+          <div>
+            <form onSubmit={searchArtists}>
+              <input
+                type="text"
+                onChange={(e) => setSearchKey(e.target.value)}
+              />
+              <button type={"submit"}>Search</button>
+            </form>
+            {artists.length ? renderArtists() : <div>No Artists</div>}
+            <button onClick={logout}>Logout</button>
+          </div>
         )}
       </header>
     </div>
