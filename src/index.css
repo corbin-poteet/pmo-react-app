@@ -2,17 +2,113 @@
 @tailwind components;
 @tailwind utilities;
 
-
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+#swiper {
+  height: 70vh;
+  aspect-ratio: 1095/1739;
+  perspective: 1000px;
+  perspective-origin: center 50%;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.preview-card {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  border-radius: 20px;
+  overflow: hidden;
+  transform: translateZ(calc(-30px * var(--i)))
+    translateY(calc(-20px * var(--i))) rotate(calc(-4deg * var(--i)));
+  filter: drop-shadow(2px 2px 20px rgba(0, 0, 0, 0.5));
+  background-color: rgb(31, 31, 31);
+  cursor: pointer;
+  user-select: none;
+}
+
+.preview-card .album-cover {
+  position: relative;
+  transform-origin: center;
+  margin: auto;
+  width: 90%;
+  top: 6%;
+  opacity: 1;
+}
+
+.preview-card .track-title {
+  position: relative;
+  text-align: left;
+  transform-origin: bottom;
+  font-size: 2.45rem;
+  font-weight: 600;
+  color: white;
+  margin: 0;
+  padding: 0;
+  margin-left: 5%;
+  margin-top: 9.5%;
+  margin-bottom: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.preview-card .track-artist {
+  position: relative;
+  text-align: left;
+  transform-origin: bottom;
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: white;
+  margin: 0;
+  padding: 0;
+  margin-left: 5%;
+  margin-top: -2.5%;
+  margin-bottom: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0.75;
+
+}
+
+.preview-card .track-album {
+  position: relative;
+  text-align: left;
+  transform-origin: bottom;
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: white;
+  margin: 0;
+  padding: 0;
+  margin-left: 5%;
+  margin-top: -1.5%;
+  margin-bottom: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0.75;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0;
+  object-fit: cover;
 }

@@ -2,6 +2,9 @@ import logo from "./logo.svg";
 import "./App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+//import preview card
+import PreviewCard from "./components/PreviewCard";
+import PreviewCards from "./components/PreviewCards";
 
 function App() {
   const CLIENT_ID = "0876b3cbdd284d49ac26ded9817b6d6d";
@@ -10,7 +13,8 @@ function App() {
   const RESPONSE_TYPE = "token";
 
   const [token, setToken] = useState("");
-
+  
+  
   useEffect(() => {
     const hash = window.location.hash;
     let token = window.localStorage.getItem("token");
@@ -35,34 +39,35 @@ function App() {
   };
 
   const [searchKey, setSearchKey] = useState("");
-  const [artists, setArtists] = useState([]);
+  const [tracks, setTracks] = useState([]);
+  const [audioObject, setAudioObject] = useState(null);
 
-  const searchArtists = async (e) => {
+  const playTrack = (track) => {
+    if (audioObject) {
+      audioObject.pause();
+    }
+
+    const newAudioObject = new Audio(track.preview_url);
+    setAudioObject(newAudioObject);
+
+    newAudioObject.play();
+  };
+
+  const searchTracks = async (e) => {
     e.preventDefault();
     const { data } = await axios.get("https://api.spotify.com/v1/search", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
       params: {
-        q: searchKey,
-        type: "artist",
+        q: "paramore",
+        type: "track",
       },
     });
 
-    setArtists(data.artists.items);
-  };
-
-  const renderArtists = () => {
-    return artists.map((artist) => (
-      <div key={artist.id}>
-        {artist.images.length ? (
-          <img width={"100%"} src={artist.images[0].url} alt="" />
-        ) : (
-          <div>No Image</div>
-        )}
-        {artist.name}
-      </div>
-    ));
+    return data;
+    //setTracks(data.tracks.items);
+    //playTrack(data.tracks.items[0].preview_url);
   };
 
   return (
@@ -76,14 +81,7 @@ function App() {
           </a>
         ) : (
           <div>
-            <form onSubmit={searchArtists}>
-              <input
-                type="text"
-                onChange={(e) => setSearchKey(e.target.value)}
-              />
-              <button type={"submit"}>Search</button>
-            </form>
-            {artists.length ? renderArtists() : <div>No Artists</div>}
+            <PreviewCards token={token} audioObject={audioObject} />
             <button onClick={logout}>Logout</button>
           </div>
         )}
