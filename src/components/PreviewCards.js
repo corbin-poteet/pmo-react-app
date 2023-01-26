@@ -18,7 +18,7 @@ class PreviewCards extends Component {
         Authorization: `Bearer ${token}`,
       },
       params: {
-        q: "paramore",
+        q: "alt j",
         type: "track",
       },
     });
@@ -37,10 +37,13 @@ class PreviewCards extends Component {
       return <div>Loading...</div>;
     }
 
-
     return (
       <div id="swiper">
-        <PreviewCard track={tracks[0]} audioObject={this.props.audioObject} />
+        <PreviewCard track={tracks[0]} index={0} />
+        <PreviewCard track={tracks[1]} index={1} />
+        <PreviewCard track={tracks[2]} index={2} />
+        <PreviewCard track={tracks[3]} index={3} />
+        <PreviewCard track={tracks[4]} index={4} />
       </div>
     );
   }

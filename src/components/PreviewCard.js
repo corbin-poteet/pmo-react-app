@@ -5,8 +5,11 @@ class PreviewCard extends Component {
     super(props);
     this.state = {
       track: props.track,
+      index: props.index,
     };
   }
+
+
 
   render() {
     const { track } = this.props;

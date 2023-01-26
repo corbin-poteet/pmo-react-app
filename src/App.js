@@ -13,8 +13,7 @@ function App() {
   const RESPONSE_TYPE = "token";
 
   const [token, setToken] = useState("");
-  
-  
+
   useEffect(() => {
     const hash = window.location.hash;
     let token = window.localStorage.getItem("token");
@@ -36,38 +35,6 @@ function App() {
   const logout = () => {
     setToken("");
     window.localStorage.removeItem("token");
-  };
-
-  const [searchKey, setSearchKey] = useState("");
-  const [tracks, setTracks] = useState([]);
-  const [audioObject, setAudioObject] = useState(null);
-
-  const playTrack = (track) => {
-    if (audioObject) {
-      audioObject.pause();
-    }
-
-    const newAudioObject = new Audio(track.preview_url);
-    setAudioObject(newAudioObject);
-
-    newAudioObject.play();
-  };
-
-  const searchTracks = async (e) => {
-    e.preventDefault();
-    const { data } = await axios.get("https://api.spotify.com/v1/search", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      params: {
-        q: "paramore",
-        type: "track",
-      },
-    });
-
-    return data;
-    //setTracks(data.tracks.items);
-    //playTrack(data.tracks.items[0].preview_url);
   };
 
   return (
